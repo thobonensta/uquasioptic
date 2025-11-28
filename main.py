@@ -1,22 +1,23 @@
+import matplotlib
+for backend in [ 'MACOSX','Qt5Agg', 'TkAgg', 'Agg']:
+    try:
+        matplotlib.use(backend, force=True)
+        import matplotlib.pyplot as plt
+
+        print(f"Using backend: {matplotlib.get_backend()}")
+        break
+    except Exception as e:
+        print(f"Failed to use backend {backend}: {e}")
 import matplotlib.pyplot as plt
 from utils.PlaneWave import SimPlaneWave
 import numpy as np
-from utils.GBQuasiOptic import SimGB, SimGB_multi
-
-# TODO 1) Use SimGB to compare with PlaneWave for one layer MUT with stochastic over epsr and thickness
-# TODO 1) @Adam you can add you planewave code to PlaneWave.py and rename the one here to SimPlaneWave_multi
-# TODO 1) This will allow to compare both approach in the two cases
-# TODO 2) Use SimPlaneWave with stochastic thickness for the middle layer (mid) and on theta so that we can compare
-# TODO 2) to the experimentation. You can use uniform laws for the both.
-# TODO 3) Do the same with SimGB_multi
-# TODO For the plot, it is better to plot your mean and confidence interval over the frequency span
+from utils.GBQuasiOptic import SimGB
 
 # Press the green button in the gutter to run the script.
 if __name__ == '__main__':
     ##### Frequency span for the simulation #####
     freq_GHz = np.linspace(220, 330, 1001, endpoint=True)
     ##### Parameters for the three layers MUT (mat/mid/mar) - mut = material under test
-    # TODO @Adam you will have to construct the dictionary with the thickness mid needed for the PCE UQ (Gauss points)
     eps_mut = 2. - 0.025j
     thickness_mut = 0.00582
     eps_mid = 21. - 0j
@@ -28,7 +29,6 @@ if __name__ == '__main__':
 ]
     # In the case of only one material its eps_mut and x2 for the thickness
     ##### angle in deg #####
-    # TODO Do a UQ on the angle_deg (Uniform law)
     angle_deg = 0
 
     ##### SIMULATION #####

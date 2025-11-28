@@ -1,7 +1,14 @@
-import math
 import time
 import matplotlib
-matplotlib.use("macOSX")
+for backend in [ 'MACOSX','Qt5Agg', 'TkAgg', 'Agg']:
+    try:
+        matplotlib.use(backend, force=True)
+        import matplotlib.pyplot as plt
+
+        print(f"Using backend: {matplotlib.get_backend()}")
+        break
+    except Exception as e:
+        print(f"Failed to use backend {backend}: {e}")
 import matplotlib.pyplot as plt
 from utils.PlaneWave import SimPlaneWaveList
 import numpy as np
@@ -228,14 +235,14 @@ if __name__ == '__main__':
     plt.plot(freq_GHz,np.abs(S11_m),'-',color='red',label='PCE')
     plt.plot(freq_GHz,np.abs(m_S11),'--',color='blue', alpha = 0.6,label='MC [{0}]'.format(N_sample))
     plt.plot(freq_GHz,np.abs(lst_S11_tmp),':',color='black', alpha = 0.6,label='Deterministe')
-    plt.fill_between(freq_GHz,np.abs(S11_m-1.96*std_S11),np.abs(S11_m+1.96*std_S11),color='red',alpha=0.3)
+    plt.fill_between(freq_GHz,np.abs(S11_m-1.96*np.sqrt(S11_std)),np.abs(S11_m+1.96*np.sqrt(S11_std)),color='red',alpha=0.3)
     plt.ylabel(r'$|S_{11}|$',fontsize=16)
     plt.xlabel('f (GHz)',fontsize=16)
     plt.legend()
     plt.figure()
     plt.plot(freq_GHz,np.abs(S12_m),'-',color='red',label='PW - PCE')
     plt.plot(freq_GHz,np.abs(m_S12),'--',color='blue', alpha = 0.6,label='PW - MC [{0}]'.format(N_sample))
-    plt.fill_between(freq_GHz,np.abs(S12_m-1.96*std_S12),np.abs(S12_m+1.96*std_S12),color='red',alpha=0.3)
+    plt.fill_between(freq_GHz,np.abs(S12_m-1.96*np.sqrt(S12_std)),np.abs(S12_m+1.96*np.sqrt(S12_std)),color='red',alpha=0.3)
     plt.plot(freq_GHz,np.abs(lst_S12_tmp),':',color='black', alpha = 0.6,label='Deterministe')
     plt.ylabel(r'$|S_{12}|$',fontsize=16)
     plt.xlabel('f (GHz)',fontsize=16)
@@ -243,7 +250,6 @@ if __name__ == '__main__':
     plt.figure()
     plt.plot(freq_GHz, np.angle(S11_m),'-',color='red', label='PW - PCE')
     plt.plot(freq_GHz, np.angle(m_S11),'--',color='blue', alpha = 0.6, label='PW - MC [{0}]'.format(N_sample))
-    plt.fill_between(freq_GHz,np.angle(S11_m-1.96*std_S11),np.angle(S11_m+1.96*std_S11),color='red',alpha=0.3)
     plt.plot(freq_GHz,np.angle(lst_S11_tmp),':',color='black', alpha = 0.6,label='Deterministe')
     plt.ylabel(r'phase $S_{11}$', fontsize=16)
     plt.xlabel('f (GHz)', fontsize=16)
@@ -251,7 +257,6 @@ if __name__ == '__main__':
     plt.figure()
     plt.plot(freq_GHz, np.angle(S12_m),'-',color='red', label='PW - PCE')
     plt.plot(freq_GHz, np.angle(m_S12),'--',color='blue', alpha = 0.6, label='PW - MC [{0}]'.format(N_sample))
-    plt.fill_between(freq_GHz,np.angle(S12_m-1.96*std_S12),np.angle(S12_m+1.96*std_S12),color='red',alpha=0.3)
     plt.plot(freq_GHz,np.angle(lst_S12_tmp),':',color='black', alpha = 0.6,label='Deterministe')
     plt.ylabel(r'phase $S_{12}$', fontsize=16)
     plt.xlabel('f (GHz)', fontsize=16)
